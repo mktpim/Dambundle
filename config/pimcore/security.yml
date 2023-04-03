@@ -1,0 +1,24 @@
+security:
+    providers:
+        pimcore_admin:
+            id: pimcore_admin.security.user_provider
+
+    firewalls:
+
+        PimcoreDamBundle-Auth:
+            anonymous: ~
+            pattern: ^/dam
+            provider: pimcore_admin
+            logout:
+                path:   /dam/logout
+                target: /dam/login
+                success_handler: pimcore_dam.security.logout_success_handler
+            guard:
+                entry_point: pimcore_dam.security.authenticator
+                authenticators:
+                    - pimcore_dam.security.authenticator
+
+    access_control:
+        - { path: ^/dam/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/dam/share/token, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/dam, roles: [ROLE_PIMCORE_USER] }

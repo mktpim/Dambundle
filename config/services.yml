@@ -1,0 +1,55 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Pimcore\Bundle\DamBundle\Controller\:
+        resource: '../../Controller'
+        public: false
+        tags: ['controller.service_arguments']
+
+    pimcore_dam_helper.templating.view_helper.folderTree:
+        class: Pimcore\Bundle\DamBundle\Templating\Helper\FolderTree
+        tags:
+            - { name: templating.helper, alias: damFolderTree }
+
+    pimcore_dam_helper.templating.view_helper.Thumbnail:
+        class: Pimcore\Bundle\DamBundle\Templating\Helper\Thumbnail
+        tags:
+            - { name: templating.helper, alias: damThumbnail }
+
+    pimcore_dam_event_listener:
+        class: Pimcore\Bundle\DamBundle\EventListener\DamListener
+        tags:
+            - { name: kernel.event_listener, event: pimcore.system.maintenance, method: onSystemMaintenance }
+
+    # guard implementation handling admin form login for the main admin firewall
+    pimcore_dam.security.authenticator:
+        class: Pimcore\Bundle\DamBundle\Security\Authenticator
+        arguments:
+            - '@security.token_storage'
+            - '@router'
+            - '@event_dispatcher'
+            - '@translator'
+            - '@security.http_utils'
+            - '@pimcore_admin.security.bruteforce_protection_handler'
+
+        calls:
+            - [setLogger, ['@logger']]
+        tags:
+            - { name: monolog.logger, channel: security }
+
+    pimcore_dam.security.logout_success_handler:
+        class: Pimcore\Bundle\DamBundle\Security\LogoutSuccessHandler
+        arguments: ['@security.token_storage', '@router', '@event_dispatcher']
+        calls:
+            - [setLogger, ['@logger']]
+        tags:
+            - { name: monolog.logger, channel: security }
+
+    # Inject dynamic permissions hook to override metadata permissions
+    # based on user permissions and asset.
+    pimcore_dam.metadata_change.hook:
+        class:  Pimcore\Bundle\DamBundle\Dam\Adapter\DefaultMetadataChangeHook
+        public: true

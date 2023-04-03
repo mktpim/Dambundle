@@ -1,0 +1,4 @@
+pimcore_dam:
+    resource: "@PimcoreDamBundle/Controller/"
+    type:     annotation
+    prefix:   /dam
