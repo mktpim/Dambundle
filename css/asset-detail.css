@@ -1,0 +1,23 @@
+#fullscreen {
+    cursor: pointer;
+    box-shadow: inset 0px 0px 15px #000000;
+    position: fixed;
+    top: 50px;
+    right: 0;
+    bottom: 0;
+    left: 74px;
+    z-index: 99999999;
+    background: #202020 no-repeat center center;
+    background-size: contain;
+}
+
+.type-Image {
+    cursor: pointer;
+}
+
+.metadata-preview-image {
+    max-height: 120px;
+    width: auto;
+    border: 1px solid #ddd;
+    padding: 5px;
+}

@@ -1,0 +1,12 @@
+.plugin_dam_open_icon {
+    background: url("/pimcore/static6/img/flat-color-icons/asset.svg") no-repeat scroll left center transparent !important;
+}
+.plugin_dam_open_icon:before {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    bottom: -3px;
+    right: -3px;
+    content: "";
+    background: url(/pimcore/static6/img/flat-color-icons/go.svg) center center no-repeat !important;
+}
